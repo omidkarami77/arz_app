@@ -1,4 +1,6 @@
 import 'package:arz_app/main.dart';
+import 'package:arz_app/model/currency.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -166,33 +168,115 @@ class Home extends StatelessWidget {
                     horizontal: 25,
                     vertical: 5,
                   ),
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(blurRadius: 1.0, color: Colors.grey),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("دلار", style: myTextTheme.headlineMedium),
-                          Text("26000", style: myTextTheme.headlineMedium),
-                          Text("+5", style: myTextTheme.headlineMedium),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: MyItem(),
                 );
               },
             ),
           ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(1000),
+                color: Color(0xffE8E8E8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 154,
+                    height: 50,
+                    child: TextButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Color(0xffCAC1FF),
+                        ),
+                      ),
+                      onPressed: () {
+                        _showSnackBar(context, "بروز رسانی با موفقیت انجام شد");
+                      },
+                      icon: Icon(
+                        color: Colors.black,
+                        CupertinoIcons.refresh_bold,
+                      ),
+
+                      label: Text(
+                        "بروز رسانی",
+                        style: TextTheme.of(context).headlineLarge,
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  Text("آخرین بروز رسانی ${_getTime()}"),
+                  SizedBox(width: 40),
+                ],
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+String _getTime() {
+  return "20:45";
+}
+
+void _showSnackBar(context, msg) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(msg, style: TextStyle(fontFamily: "dana")),
+      backgroundColor: Colors.green,
+    ),
+  );
+}
+
+class MyItem extends StatelessWidget {
+  MyItem({super.key});
+  List<Currency> currency = [];
+
+  @override
+  Widget build(BuildContext context) {
+    currency.add(
+      Currency(
+        id: "1",
+        title: "omid",
+        price: "200",
+        status: "alo",
+        change: "yes",
+      ),
+    );
+    return Container(
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+        boxShadow: <BoxShadow>[BoxShadow(blurRadius: 1.0, color: Colors.grey)],
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              currency[0].title.toString(),
+              style: myTextTheme.headlineMedium,
+            ),
+            Text(
+              currency[0].price.toString(),
+              style: myTextTheme.headlineMedium,
+            ),
+            Text(
+              currency[0].change.toString(),
+              style: myTextTheme.headlineMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
